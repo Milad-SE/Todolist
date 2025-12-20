@@ -1,0 +1,189 @@
+<div class="todo-container">
+
+    <div class="input-form">
+        <input type="text" id="task-name-input" data-translatable-attr="placeholder" data-key-attr="taskNamePlaceholder"
+            placeholder="عنوان وظیفه (مثلاً: پروژه فردا)">
+        <textarea id="task-desc-input" data-translatable-attr="placeholder" data-key-attr="taskDescPlaceholder"
+            placeholder="توضیحات کامل وظیفه و جزئیات..."></textarea>
+        <button id="add-btn" data-translatable="true" data-key="addTaskBtn">اضافه کردن وظیفه</button>
+    </div>
+
+    <ul id="todo-list">
+
+        <li>
+            <div class="task-content">
+                <div class="task-name" data-translatable="true" data-key="task1Name">طراحی رابط کاربری (UI/UX)</div>
+                <div class="task-description" data-translatable="true" data-key="task1Desc">بررسی فیدبک‌های کاربر و
+                    اعمال تغییرات نهایی در صفحه اصلی و پروفایل.</div>
+            </div>
+            <div class="edit-fields">
+                <input type="text" class="edit-name-input" value="طراحی رابط کاربری (UI/UX)">
+                <textarea
+                    class="edit-desc-input">بررسی فیدبک‌های کاربر و اعمال تغییرات نهایی در صفحه اصلی و پروفایل.</textarea>
+            </div>
+            <div class="actions">
+                <button class="action-btn complete-btn" data-translatable-attr="title" data-key-attr="completeTitle"
+                    title="تکمیل">✓</button>
+                <button class="action-btn edit-btn" data-translatable-attr="title" data-key-attr="editTitle"
+                    title="ویرایش"><i class="fas fa-pen"></i></button>
+                <button class="action-btn save-btn" data-translatable-attr="title" data-key-attr="saveTitle"
+                    title="ذخیره">✓</button>
+                <button class="action-btn delete-btn" data-translatable-attr="title" data-key-attr="deleteTitle"
+                    title="حذف">✕</button>
+            </div>
+        </li>
+
+        <li class="completed">
+            <div class="task-content">
+                <div class="task-name" data-translatable="true" data-key="task2Name">آماده‌سازی گزارش ماهیانه</div>
+                <div class="task-description" data-translatable="true" data-key="task2Desc">جمع‌آوری داده‌های فروش و
+                    خلاصه‌سازی عملکرد سه ماهه آخر.</div>
+            </div>
+            <div class="edit-fields">
+                <input type="text" class="edit-name-input" value="آماده‌سازی گزارش ماهیانه">
+                <textarea class="edit-desc-input">جمع‌آوری داده‌های فروش و خلاصه‌سازی عملکرد سه ماهه آخر.</textarea>
+            </div>
+            <div class="actions">
+                <button class="action-btn complete-btn" data-translatable-attr="title" data-key-attr="completeTitle"
+                    title="تکمیل">✓</button>
+                <button class="action-btn edit-btn" data-translatable-attr="title" data-key-attr="editTitle"
+                    title="ویرایش"><i class="fas fa-pen"></i></button>
+                <button class="action-btn save-btn" data-translatable-attr="title" data-key-attr="saveTitle"
+                    title="ذخیره">✓</button>
+                <button class="action-btn delete-btn" data-translatable-attr="title" data-key-attr="deleteTitle"
+                    title="حذف">✕</button>
+            </div>
+        </li>
+
+        <li class="editing">
+            <div class="task-content">
+                <div class="task-name" data-translatable="true" data-key="task3NameHidden">این متن در حالت ویرایش دیده
+                    نمی‌شود</div>
+                <div class="task-description" data-translatable="true" data-key="task3DescHidden">توضیحات پنهان</div>
+            </div>
+            <div class="edit-fields">
+                <input type="text" class="edit-name-input" value="تغییر عنوان اینجا">
+                <textarea class="edit-desc-input">اینجا می‌توان توضیحات را ویرایش کرد.</textarea>
+            </div>
+            <div class="actions">
+                <button class="action-btn complete-btn" data-translatable-attr="title" data-key-attr="completeTitle"
+                    title="تکمیل">✓</button>
+                <button class="action-btn edit-btn" data-translatable-attr="title" data-key-attr="editTitle"
+                    title="ویرایش"><i class="fas fa-pen"></i></button>
+                <button class="action-btn save-btn" data-translatable-attr="title" data-key-attr="saveTitle"
+                    title="ذخیره">✓</button>
+                <button class="action-btn delete-btn" data-translatable-attr="title" data-key-attr="deleteTitle"
+                    title="حذف">✕</button>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+<script>
+    const translations = {
+        headerTitle: { fa: 'لیست انجام کارهای من', en: 'My To-Do List' },
+        headerIcon: { fa: '⭐', en: '⭐' },
+        themeBtnText: { fa: 'حالت شب', en: 'Dark Mode' },
+        langBtnText: { fa: 'English', en: 'فارسی' },
+        addTaskBtn: { fa: 'اضافه کردن وظیفه', en: 'Add Task' },
+        task1Name: { fa: 'طراحی رابط کاربری (UI/UX)', en: 'UI/UX Design' },
+        task1Desc: { fa: 'بررسی فیدبک‌های کاربر و اعمال تغییرات نهایی در صفحه اصلی و پروفایل.', en: 'Review user feedback and finalize changes on the homepage and profile.' },
+        task2Name: { fa: 'آماده‌سازی گزارش ماهیانه', en: 'Prepare Monthly Report' },
+        task2Desc: { fa: 'جمع‌آوری داده‌های فروش و خلاصه‌سازی عملکرد سه ماهه آخر.', en: 'Gather sales data and summarize performance for the last quarter.' },
+        task3NameHidden: { fa: 'این متن در حالت ویرایش دیده نمی‌شود', en: 'This text is hidden in edit mode' },
+        task3DescHidden: { fa: 'توضیحات پنهان', en: 'Hidden description' },
+        taskNamePlaceholder: { fa: 'عنوان وظیفه (مثلاً: پروژه فردا)', en: 'Task Title (e.g., Project Tomorrow)' },
+        taskDescPlaceholder: { fa: 'توضیحات کامل وظیفه و جزئیات...', en: 'Full task description and details...' },
+        completeTitle: { fa: 'تکمیل', en: 'Complete' },
+        editTitle: { fa: 'ویرایش', en: 'Edit' },
+        saveTitle: { fa: 'ذخیره', en: 'Save' },
+        deleteTitle: { fa: 'حذف', en: 'Delete' },
+        pageTitle: { fa: 'لیست انجام کارها (فارسی)', en: 'To-Do List (English)' },
+    };
+
+    function updateLanguage(lang) {
+        const html = document.documentElement;
+        const body = document.body;
+        const toggleBtn = document.getElementById('language-toggle');
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+        body.classList.remove('fa', 'en');
+        body.classList.add(lang);
+
+        document.querySelectorAll('[data-translatable="true"]').forEach(el => {
+            const key = el.getAttribute('data-key');
+            if (translations[key] && translations[key][lang]) {
+                el.textContent = translations[key][lang];
+            }
+        });
+
+        document.querySelectorAll('[data-translatable-attr]').forEach(el => {
+            const attr = el.getAttribute('data-translatable-attr');
+            const key = el.getAttribute('data-key-attr');
+            if (translations[key] && translations[key][lang]) {
+                el.setAttribute(attr, translations[key][lang]);
+            }
+        });
+
+        document.getElementById('page-title').textContent = translations.pageTitle[lang];
+
+        toggleBtn.setAttribute('data-current-lang', lang);
+        toggleBtn.querySelector('[data-key="langBtnText"]').textContent = lang === 'fa' ? 'English' : 'فارسی';
+
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeBtnText = themeBtn.querySelector('[data-key="themeBtnText"]');
+
+        const isDarkMode = body.classList.contains('dark-mode');
+        if (themeBtnText) {
+            if (lang === 'fa') {
+                themeBtnText.textContent = isDarkMode ? 'حالت روز' : 'حالت شب';
+            } else {
+                themeBtnText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+            }
+        }
+
+        localStorage.setItem('appLang', lang);
+    }
+
+    const savedLang = localStorage.getItem('appLang') || 'fa';
+    updateLanguage(savedLang);
+
+    document.getElementById('language-toggle').addEventListener('click', function () {
+        const currentLang = this.getAttribute('data-current-lang');
+        const newLang = currentLang === 'fa' ? 'en' : 'fa';
+        updateLanguage(newLang);
+    });
+
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const currentLang = document.getElementById('language-toggle').getAttribute('data-current-lang');
+
+        const icon = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+
+        const textFA = isDarkMode ? 'حالت روز' : 'حالت شب';
+        const textEN = isDarkMode ? 'Light Mode' : 'Dark Mode';
+
+        const themeBtnText = this.querySelector('[data-key="themeBtnText"]');
+
+        if (themeBtnText) {
+            themeBtnText.textContent = currentLang === 'fa' ? textFA : textEN;
+        }
+
+        this.querySelector('i').className = icon;
+        localStorage.setItem('darkMode', isDarkMode ? 'true' : 'false');
+    });
+
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.querySelector('i').className = 'fas fa-sun';
+        const currentLang = document.getElementById('language-toggle').getAttribute('data-current-lang');
+        const themeBtnText = themeToggleBtn.querySelector('[data-key="themeBtnText"]');
+        if (themeBtnText) {
+            themeBtnText.textContent = currentLang === 'fa' ? 'حالت روز' : 'Light Mode';
+        }
+    }
+</script>

@@ -1,31 +1,316 @@
-html {
-  font-size: 14px;
+/* ==================================== */
+/* 1. پالت رنگی پایه (تم روشن - شاد و پرانرژی) */
+/* ==================================== */
+:root {
+    --color-primary: #6c5ce7;     
+    --color-secondary: #00b894;   
+    --color-accent: #ff7675;      
+    --color-error: #d63031;       
+    --bg-page: #f0f3f5;           
+    --bg-card: #e5f6ff;           
+    --bg-item: #ffffff;           
+    --text-dark: #2d3436;         
+    --text-muted: #636e72;        
+    --shadow-color: rgba(0,0,0,0.15); 
+    --input-border: #dcdcdc;
+    --completed-bg: #e5f5f0;      
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* ==================================== */
+/* 2. پالت رنگی تم تاریک (تیره و عمیق‌تر) */
+/* ==================================== */
+body.dark-mode {
+    --color-primary: #b39ddb;       
+    --color-secondary: #80cbc4;     
+    --color-accent: #ffcc80;        
+    --color-error: #ef9a9a;         
+    --bg-page: #121212;             
+    --bg-card: #1e1e1e;             
+    --bg-item: #2c2c2c;             
+    --text-dark: #e0e0e0;           
+    --text-muted: #b0b0b0;          
+    --shadow-color: rgba(0,0,0,0.8); 
+    --input-border: #444444;
+    --completed-bg: #333333;        
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* ==================================== */
+/* 3. استایل‌های عمومی */
+/* ==================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Vazirmatn', sans-serif; 
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+    width: 100%; 
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--bg-page);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; 
+    min-height: 100vh;
+    padding: 20px 20px;
+    color: var(--text-dark);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+body.en {
+    direction: ltr; 
+    text-align: left;
+    font-family: Arial, sans-serif; 
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+body.en .task-content { margin-right: 15px; margin-left: 0; }
+body.en li { border-right: 5px solid var(--text-muted); border-left: none; }
+body.en li.completed { border-right-color: var(--color-secondary); }
+body.en .actions { direction: ltr; } 
+body.en button#add-btn { align-self: flex-start; } 
+
+/* ==================================== */
+/* 4. استایل‌های هدر اصلی */
+/* ==================================== */
+.main-header {
+    width: 100%;
+    max-width: 900px; 
+    margin-left: auto;
+    margin-right: auto;
+    background: var(--bg-item); 
+    padding: 15px 25px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--color-secondary);
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.header-branding {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--color-primary); 
+}
+
+.header-branding i {
+    margin-left: 10px; 
+    font-size: 1.2rem;
+    color: var(--color-accent); 
+}
+
+body.en .header-branding i {
+    margin-right: 10px; 
+    margin-left: 0;
+}
+
+#theme-toggle, #language-toggle {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+#language-toggle {
+    background: var(--color-secondary);
+    box-shadow: 0 4px 10px rgba(0, 184, 148, 0.4);
+}
+#language-toggle:hover { background: #008f73; }
+#theme-toggle:hover { background-color: #5c4fd3; }
+
+body.dark-mode #theme-toggle { 
+    background: var(--color-accent); 
+    color: var(--bg-card); 
+    box-shadow: 0 0 15px rgba(255, 204, 128, 0.5); 
+}
+body.dark-mode #language-toggle { 
+    background: var(--color-secondary); 
+    color: var(--bg-card); 
+    box-shadow: 0 0 15px rgba(128, 203, 196, 0.5); 
+}
+
+body.dark-mode #theme-toggle:hover { background: #e0ac5f; }
+body.dark-mode #language-toggle:hover { background: #64b5a7; }
+
+/* کارت اصلی (todo-container) */
+.todo-container {
+    background: var(--bg-card);
+    width: 100%;
+    max-width: 900px;
+    padding: 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--bg-item);
+    border-radius: 12px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px 15px;
+    color: var(--text-dark);
+    background: var(--bg-card); 
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    resize: vertical;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+}
+
+button#add-btn {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: 0.3s;
+    align-self: flex-end;
+}
+
+button#add-btn:hover { background-color: #5c4fd3; }
+
+body.dark-mode button#add-btn {
+    background-color: var(--color-primary); 
+    color: var(--bg-card); 
+    box-shadow: 0 0 15px rgba(179, 157, 219, 0.5); 
+}
+body.dark-mode button#add-btn:hover { background-color: #9f8ac8; } 
+
+ul { list-style: none; }
+
+li {
+    background: var(--bg-item);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: 0.3s;
+    border-left: 5px solid var(--text-muted); 
+}
+
+.task-content { flex-grow: 1; margin-left: 15px; }
+.task-name { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); line-height: 1.5; }
+.task-description { font-size: 0.9rem; color: var(--text-muted); margin-top: 5px; max-width: 95%; }
+
+.actions { display: flex; gap: 8px; }
+
+.action-btn {
+    border: 2px solid transparent; 
+    width: 38px; 
+    height: 38px; 
+    border-radius: 50%; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem; 
+    transition: 0.2s;
+    flex-shrink: 0;
+    color: white; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+}
+
+.delete-btn { background: var(--color-error); }
+.complete-btn { background: var(--color-secondary); }
+.edit-btn { background: var(--color-accent); }
+.save-btn { background: var(--color-primary); }
+
+.delete-btn:hover { background: #af2b2b; }
+.complete-btn:hover { background: #008f73; }
+.edit-btn:hover { background: #e06a69; }
+.save-btn:hover { background: #5c4fd3; }
+
+body.dark-mode .action-btn {
+    background: var(--bg-item); 
+    border: 2px solid currentColor; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); 
+}
+
+body.dark-mode .delete-btn { color: var(--color-error); }
+body.dark-mode .complete-btn { color: var(--color-secondary); }
+body.dark-mode .edit-btn { color: var(--color-accent); }
+body.dark-mode .save-btn { color: var(--color-primary); }
+
+body.dark-mode .action-btn:hover { background: #3a3a3a; }
+
+li:not(.editing) .edit-fields, li:not(.editing) .save-btn { display: none; }
+li.editing .task-content, li.editing .complete-btn, li.editing .edit-btn { display: none !important; }
+li.editing .edit-fields { flex-grow: 1; display: flex; flex-direction: column; gap: 5px; margin-left: 15px; }
+li.editing .save-btn { display: flex; }
+li.editing .edit-fields input, li.editing .edit-fields textarea { border-color: var(--color-accent); }
+
+body.en li.editing .edit-fields { margin-right: 15px; margin-left: 0; }
+
+/* ==================================== */
+/* آیتم تکمیل شده در حالت روشن */
+li.completed {
+    background-color: #e5f5f0; /* پس‌زمینه سبز روشن */
+    border-left-color: #00b894; /* خط کناری سبز */
+    box-shadow: 0 0 10px rgba(0, 184, 148, 0.3); /* هاله سبز ملایم */
+}
+
+li.completed .task-name {
+    text-decoration: line-through;
+    color: #2d3436;
+}
+
+li.completed .task-description {
+    color: #636e72;
+}
+
+/* ==================================== */
+/* آیتم تکمیل شده در حالت تاریک */
+body.dark-mode li.completed {
+    background-color: #2a3a2f; /* پس‌زمینه تیره‌تر و سبز مایل */
+    border-left-color: #00b894; /* خط کناری روشن سبز */
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(0, 184, 148, 0.5); /* هاله روشن‌تر */
+}
+
+body.dark-mode li.completed .task-name {
+    color: #d4f5e0; 
+    text-decoration: line-through;
+}
+
+body.dark-mode li.completed .task-description {
+    color: #a0d9b8; 
 }

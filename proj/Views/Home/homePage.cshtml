@@ -1,81 +1,36 @@
+@model proj.Models.TodoViewModel
 <div class="todo-container">
-
-    <div class="input-form">
-        <input type="text" id="task-name-input" data-translatable-attr="placeholder" data-key-attr="taskNamePlaceholder"
-            placeholder="عنوان وظیفه (مثلاً: پروژه فردا)">
-        <textarea id="task-desc-input" data-translatable-attr="placeholder" data-key-attr="taskDescPlaceholder"
-            placeholder="توضیحات کامل وظیفه و جزئیات..."></textarea>
-        <button id="add-btn" data-translatable="true" data-key="addTaskBtn">اضافه کردن وظیفه</button>
-    </div>
-
+    <form asp-action="addTask" method="post">
+        <div class="input-form">
+            <input type="text" id="task-name-input" data-translatable-attr="placeholder"
+                data-key-attr="taskNamePlaceholder" asp-for="NewTask.Name" placeholder="عنوان وظیفه (مثلاً: پروژه فردا)">
+            <textarea id="task-desc-input" data-translatable-attr="placeholder" data-key-attr="taskDescPlaceholder"
+                asp-for="NewTask.Description" placeholder="توضیحات کامل وظیفه و جزئیات..."></textarea>
+            <button id="add-btn" data-translatable="true" data-key="addTaskBtn">اضافه کردن وظیفه</button>
+        </div>
+    </form>
     <ul id="todo-list">
-        <li>
-            <div class="task-content">
-                <div class="task-name" data-translatable="true" data-key="task1Name">طراحی رابط کاربری (UI/UX)</div>
-                <div class="task-description" data-translatable="true" data-key="task1Desc">بررسی فیدبک‌های کاربر و
-                    اعمال تغییرات نهایی در صفحه اصلی و پروفایل.</div>
-            </div>
-            <div class="edit-fields">
-                <input type="text" class="edit-name-input" value="طراحی رابط کاربری (UI/UX)">
-                <textarea
-                    class="edit-desc-input">بررسی فیدبک‌های کاربر و اعمال تغییرات نهایی در صفحه اصلی و پروفایل.</textarea>
-            </div>
-            <div class="actions">
-                <button class="action-btn complete-btn" data-translatable-attr="title" data-key-attr="completeTitle"
-                    title="تکمیل">✓</button>
-                <button class="action-btn edit-btn" data-translatable-attr="title" data-key-attr="editTitle"
-                    title="ویرایش"><i class="fas fa-pen"></i></button>
-                <button class="action-btn save-btn" data-translatable-attr="title" data-key-attr="saveTitle"
-                    title="ذخیره">✓</button>
-                <button class="action-btn delete-btn" data-translatable-attr="title" data-key-attr="deleteTitle"
-                    title="حذف">✕</button>
-            </div>
-        </li>
-
-        <li class="completed">
-            <div class="task-content">
-                <div class="task-name" data-translatable="true" data-key="task2Name">آماده‌سازی گزارش ماهیانه</div>
-                <div class="task-description" data-translatable="true" data-key="task2Desc">جمع‌آوری داده‌های فروش و
-                    خلاصه‌سازی عملکرد سه ماهه آخر.</div>
-            </div>
-            <div class="edit-fields">
-                <input type="text" class="edit-name-input" value="آماده‌سازی گزارش ماهیانه">
-                <textarea class="edit-desc-input">جمع‌آوری داده‌های فروش و خلاصه‌سازی عملکرد سه ماهه آخر.</textarea>
-            </div>
-            <div class="actions">
-                <button class="action-btn complete-btn" data-translatable-attr="title" data-key-attr="completeTitle"
-                    title="تکمیل">✓</button>
-                <button class="action-btn edit-btn" data-translatable-attr="title" data-key-attr="editTitle"
-                    title="ویرایش"><i class="fas fa-pen"></i></button>
-                <button class="action-btn save-btn" data-translatable-attr="title" data-key-attr="saveTitle"
-                    title="ذخیره">✓</button>
-                <button class="action-btn delete-btn" data-translatable-attr="title" data-key-attr="deleteTitle"
-                    title="حذف">✕</button>
-            </div>
-        </li>
-
-        <li class="editing">
-            <div class="task-content">
-                <div class="task-name" data-translatable="true" data-key="task3NameHidden">این متن در حالت ویرایش دیده
-                    نمی‌شود</div>
-                <div class="task-description" data-translatable="true" data-key="task3DescHidden">توضیحات پنهان</div>
-            </div>
-            <div class="edit-fields">
-                <input type="text" class="edit-name-input" value="تغییر عنوان اینجا">
-                <textarea class="edit-desc-input">اینجا می‌توان توضیحات را ویرایش کرد.</textarea>
-            </div>
-            <div class="actions">
-                <button class="action-btn complete-btn" data-translatable-attr="title" data-key-attr="completeTitle"
-                    title="تکمیل">✓</button>
-                <button class="action-btn edit-btn" data-translatable-attr="title" data-key-attr="editTitle"
-                    title="ویرایش"><i class="fas fa-pen"></i></button>
-                <button class="action-btn save-btn" data-translatable-attr="title" data-key-attr="saveTitle"
-                    title="ذخیره">✓</button>
-                <button class="action-btn delete-btn" data-translatable-attr="title" data-key-attr="deleteTitle"
-                    title="حذف">✕</button>
-            </div>
-        </li>
-
+        @foreach (var task in Model.Tasks)
+        {
+            <li class="@((task.Completed ? "completed" : ""))">
+                <div class="task-content">
+                    <div class="task-name">@task.Name</div>
+                    <div class="task-description">@task.Description</div>
+                </div>
+                <div class="actions">
+                    <form asp-action="ToggleComplete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@task.Id" />
+                        <button type="submit" class="action-btn complete-btn">✓</button>
+                    </form>
+                    <button class="action-btn edit-btn"><i class="fas fa-pen"></i></button>
+                    <button class="action-btn save-btn">✓</button>
+                    <form asp-action="DeleteTask" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@task.Id" />
+                        <button type="submit" class="action-btn delete-btn">✕</button>
+                    </form>
+                </div>
+            </li>
+        }
     </ul>
 </div>
 

@@ -6,15 +6,32 @@ namespace proj.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly DBTodolist _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(DBTodolist context)
     {
-        _logger = logger;
+        _context = context;
     }
 
     public IActionResult homePage()
     {
-        return View();
+        var tvmodel = new TodoViewModel
+        {
+            Tasks = _context.Tasks.ToList()
+        };
+        return View(tvmodel);
     }
+            [HttpPost]
+        public IActionResult AddTask(TodoViewModel tvM)
+        {
+            if (!ModelState.IsValid)
+            {
+                tvM.Tasks = _context.Tasks.ToList();
+                return View("HomePage", tvM);
+            }
+
+            _context.Tasks.Add(tvM.NewTask);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(homePage));
+        }
 }

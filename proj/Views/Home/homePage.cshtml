@@ -3,7 +3,8 @@
     <form asp-action="addTask" method="post">
         <div class="input-form">
             <input type="text" id="task-name-input" data-translatable-attr="placeholder"
-                data-key-attr="taskNamePlaceholder" asp-for="NewTask.Name" placeholder="عنوان وظیفه (مثلاً: پروژه فردا)">
+                data-key-attr="taskNamePlaceholder" asp-for="NewTask.Name"
+                placeholder="عنوان وظیفه (مثلاً: پروژه فردا)">
             <textarea id="task-desc-input" data-translatable-attr="placeholder" data-key-attr="taskDescPlaceholder"
                 asp-for="NewTask.Description" placeholder="توضیحات کامل وظیفه و جزئیات..."></textarea>
             <button id="add-btn" data-translatable="true" data-key="addTaskBtn">اضافه کردن وظیفه</button>
@@ -12,18 +13,39 @@
     <ul id="todo-list">
         @foreach (var task in Model.Tasks)
         {
-            <li class="@((task.Completed ? "completed" : ""))">
-                <div class="task-content">
+            <li id="task-@task.Id" class="@((task.Completed ? "completed" : ""))">
+
+                <div class="task-content display-mode">
                     <div class="task-name">@task.Name</div>
                     <div class="task-description">@task.Description</div>
                 </div>
-                <div class="actions">
-                    <form asp-action="Complete" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@task.Id" />
-                        <button type="submit" class="action-btn complete-btn">✓</button>
-                    </form>
-                    <button class="action-btn edit-btn"><i class="fas fa-pen"></i></button>
-                    <button class="action-btn save-btn">✓</button>
+
+                <form asp-action="EditTask" method="post" class="edit-mode"
+                    style="display:none; flex-grow: 1; gap: 10px; flex-direction: column;">
+                    <input type="hidden" name="Id" value="@task.Id" />
+                    <input type="text" name="Name" value="@task.Name" class="form-control" />
+                    <textarea name="Description" class="form-control">@task.Description</textarea>
+                    <div class="actions" style="margin-top: 5px;">
+                        <button type="submit" class="action-btn save-btn" title="ذخیره"><i
+                                class="fas fa-check"></i></button>
+                        <button type="button" class="action-btn delete-btn cancel-btn" onclick="toggleEdit(@task.Id, false)"
+                            title="انصراف"><i class="fas fa-times"></i></button>
+                    </div>
+                </form>
+
+                <div class="actions display-mode">
+                    @if (!task.Completed)
+                    {
+                        <form asp-action="Complete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@task.Id" />
+                            <button type="submit" class="action-btn complete-btn">✓</button>
+                        </form>
+
+                        <button type="button" class="action-btn edit-btn" onclick="toggleEdit(@task.Id, true)">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    }
+
                     <form asp-action="DeleteTask" method="post" style="display:inline;">
                         <input type="hidden" name="id" value="@task.Id" />
                         <button type="submit" class="action-btn delete-btn">✕</button>
@@ -138,6 +160,50 @@
         const themeBtnText = themeToggleBtn.querySelector('[data-key="themeBtnText"]');
         if (themeBtnText) {
             themeBtnText.textContent = currentLang === 'fa' ? 'حالت روز' : 'Light Mode';
+        }
+    }
+
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const li = this.closest('li');
+            const taskName = li.querySelector('.task-name').textContent;
+            const taskDesc = li.querySelector('.task-description').textContent;
+            const taskId = li.querySelector('input[name="id"]').value;
+
+            // تبدیل محتوا به فرم ویرایش
+            li.innerHTML = `
+            <form action="/Home/EditTask" method="post" style="width:100%; display:flex; gap:10px;">
+                <input type="hidden" name="Id" value="${taskId}" />
+                <div style="flex-grow:1; display:flex; flex-direction:column; gap:5px;">
+                    <input type="text" name="Name" value="${taskName}" class="form-control" />
+                    <textarea name="Description" class="form-control">${taskDesc}</textarea>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="action-btn save-btn">✓</button>
+                    <button type="button" onclick="location.reload()" class="action-btn delete-btn">✕</button>
+                </div>
+            </form>`;
+        });
+    });
+
+    function toggleEdit(id, isEditMode) {
+        const li = document.getElementById('task-' + id);
+        const displayElements = li.querySelectorAll('.display-mode');
+        const editModeElements = li.querySelectorAll('.edit-mode');
+
+        if (isEditMode) {
+            // مخفی کردن بخش نمایش و نشان دادن فرم ویرایش
+            displayElements.forEach(el => el.style.setProperty('display', 'none', 'important'));
+            editModeElements.forEach(el => el.style.setProperty('display', 'flex', 'important'));
+            li.classList.add('editing');
+        } else {
+            // بازگشت به حالت عادی
+            displayElements.forEach(el => {
+                // برای div.actions و div.task-content مقدار مناسب برگردانده شود
+                el.style.display = el.classList.contains('actions') ? 'flex' : 'block';
+            });
+            editModeElements.forEach(el => el.style.display = 'none');
+            li.classList.remove('editing');
         }
     }
 </script>

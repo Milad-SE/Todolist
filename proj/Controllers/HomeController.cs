@@ -52,4 +52,22 @@ public class HomeController : Controller
         _context.SaveChanges();
         return RedirectToAction(nameof(homePage));
     }
+    [HttpPost]
+    public IActionResult EditTask(int Id, string Name, string Description)
+    {
+        var task = _context.Tasks.Find(Id);
+        if (task == null)
+        {
+            return NotFound();
+        }
+
+        if (!string.IsNullOrEmpty(Name))
+        {
+            task.Name = Name;
+            task.Description = Description;
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction(nameof(homePage));
+    }
 }

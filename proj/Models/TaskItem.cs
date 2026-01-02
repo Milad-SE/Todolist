@@ -20,5 +20,6 @@ namespace proj.Models
 
         public bool Completed { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string? ClientId { get; set; }
     }
 }

@@ -13,21 +13,47 @@ public class HomeController : Controller
     {
         _context = context;
     }
+    
+    private string GetClientId()
+    {
+        if (!Request.Cookies.ContainsKey("ClientId"))
+        {
+            var id = Guid.NewGuid().ToString();
+            Response.Cookies.Append("ClientId", id, new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddYears(1)
+            });
+            return id;
+        }
+        return Request.Cookies["ClientId"];
+    }
+
 
     public IActionResult homePage()
     {
-        var tvmodel = new TodoViewModel
+        var clientId = GetClientId();
+
+        var model = new TodoViewModel
         {
-            Tasks = _context.Tasks.ToList()
+            Tasks = _context.Tasks
+                .Where(t => t.ClientId == clientId)
+                .ToList()
         };
-        return View(tvmodel);
+
+        return View(model);
     }
+
+
     [HttpPost]
     public IActionResult AddTask(TodoViewModel tvM)
     {
+        var clientId = GetClientId();
+        tvM.NewTask.ClientId = clientId;
         if (!ModelState.IsValid)
         {
-            tvM.Tasks = _context.Tasks.ToList();
+            tvM.Tasks = _context.Tasks
+                .Where(t => t.ClientId == clientId)
+                .ToList();
             return View("homePage", tvM);
         }
 
@@ -37,7 +63,8 @@ public class HomeController : Controller
     }
     public IActionResult DeleteTask(int Id)
     {
-        var task = _context.Tasks.Find(Id);
+        var clientId = GetClientId();
+        var task = _context.Tasks.FirstOrDefault(t => t.Id == Id && t.ClientId == clientId);
         if (task != null)
         {
             _context.Tasks.Remove(task);
@@ -47,15 +74,21 @@ public class HomeController : Controller
     }
     public IActionResult Complete(int Id)
     {
-        var task = _context.Tasks.Find(Id);
-        task.Completed = true;
-        _context.SaveChanges();
+        var clientId = GetClientId();
+        var task = _context.Tasks.FirstOrDefault(t => t.Id == Id && t.ClientId == clientId);
+        if (task != null)
+        {
+            task.Completed = true;
+            _context.SaveChanges();
+        }
         return RedirectToAction(nameof(homePage));
     }
+
     [HttpPost]
     public IActionResult EditTask(int Id, string Name, string Description)
     {
-        var task = _context.Tasks.Find(Id);
+        var clientId = GetClientId();
+        var task = _context.Tasks.FirstOrDefault(t => t.Id == Id && t.ClientId == clientId);
         if (task == null)
         {
             return NotFound();

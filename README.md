@@ -45,3 +45,4 @@ Follow these steps to get the project running on your machine:
 ```bash
 git clone [https://github.com/Milad-SE/Todolist.git](https://github.com/Milad-SE/Todolist.git)
 cd Todolist
+dotnet run

@@ -177,12 +177,12 @@ body.dark-mode #language-toggle:hover { background: #64b5a7; }
 
 input[type="text"], textarea {
     width: 100%;
-    padding: 12px 15px;
+    padding: 20px 25px;
     color: var(--text-dark);
     background: var(--bg-card); 
     border: 1px solid var(--input-border);
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: 12px;
+    font-size: 1.2rem;
     outline: none;
     resize: vertical;
 }
@@ -231,7 +231,14 @@ li {
 
 .task-content { flex-grow: 1; margin-left: 15px; }
 .task-name { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); line-height: 1.5; }
-.task-description { font-size: 0.9rem; color: var(--text-muted); margin-top: 5px; max-width: 95%; }
+.task-description { 
+    font-size: 0.95rem; 
+    color: var(--text-muted); 
+    margin-top: 8px;    
+    max-width: 100%;   
+    line-height: 1.6;   
+    width: 100%; 
+}
 
 .actions { display: flex; gap: 8px; }
 
@@ -315,4 +322,166 @@ body.dark-mode li.completed .task-name {
 
 body.dark-mode li.completed .task-description {
     color: #a0d9b8; 
+}
+/*ریسپانسیو*/
+@media (max-width: 768px) {
+
+    /*وقتی آیتم  در حالت ویرایش است */
+    li.editing .edit-mode {
+        display: flex !important;
+        flex-direction: column !important; 
+        gap: 10px;
+    }
+
+    /* دکمه‌ها در یک ردیف افقی */
+    li.editing .edit-mode .actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    li.editing .edit-mode .action-btn {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        font-size: 0.9rem;
+    }
+
+    /* ورودی‌ها تمام عرض */
+    li.editing .edit-mode input,
+    li.editing .edit-mode textarea {
+        width: 100%;
+        font-size: 16px; /* جلوگیری از زوم موبایل */
+        padding: 10px;
+    }
+}
+
+/* ============================= */
+/* Mobile UX Improvements */
+/* ============================= */
+@media (max-width: 480px) {
+
+    
+    .main-header {
+        position: relative;
+        padding-top: 55px; /* فضا برای دکمه‌های بالا */
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .header-controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        justify-content: space-between;
+        width: calc(100% - 20px);
+    }
+
+    #language-toggle,
+    #theme-toggle {
+        padding: 8px 12px;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+
+    #language-toggle span,
+    #theme-toggle span {
+        display: none; /* فقط آیکن */
+    }
+
+    .header-branding {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 1.1rem;
+        white-space: nowrap;
+    }
+
+    .header-branding i {
+        font-size: 1rem;
+    }
+
+    /* ================= بدنه کلی ================= */
+    body {
+        padding: 10px;
+    }
+
+    /* ================= فرم Add Task ================= */
+    .input-form {
+        padding: 14px;
+        gap: 10px;
+        border-radius: 14px;
+    }
+
+    input[type="text"],
+    textarea {
+        font-size: 16px; /* جلوگیری از زوم */
+        border-radius: 10px;
+    }
+
+    button#add-btn {
+        width: 100%;
+        align-self: stretch;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 10px;
+    }
+
+    /* ================= لیست تسک‌ها ================= */
+    li {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 14px;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .task-name {
+        font-size: 1.05rem;
+        line-height: 1.4;
+    }
+
+    .task-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* ================= دکمه‌های اکشن ================= */
+    .actions {
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+
+    /* ================= Edit Mode ================= */
+    li.editing {
+        border: 2px solid var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.15);
+    }
+
+    li.editing .edit-mode {
+        gap: 8px;
+    }
+
+    #task-name-input {
+        height: 42px;         
+        min-height: unset;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        line-height: 1.2;
+    }
+
+    #task-desc-input {
+        min-height: 90px;     
+    }
 }
